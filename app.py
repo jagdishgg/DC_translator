@@ -1,7 +1,7 @@
 import streamlit as st
 from translate_ar_to_en import translate_arabic_to_english
 from translate_ar_to_en import simple_lang_detect
-from translate_ar_to_en load_models
+from translate_ar_to_en import load_models
 
 st.title("DC Arabic to English and viceversa Translator")
 st.markdown("Use Transliteration button for person or entity names")
