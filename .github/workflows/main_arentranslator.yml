@@ -58,4 +58,4 @@ jobs:
         with:
           app-name: 'ARENTRANSLATOR'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_BB653667A4474418B6BC0D88A9C1B215 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C7798F2DAE5E4B3688C97A4DE0C40CED }}
