@@ -1,7 +1,7 @@
 from transformers import MarianMTModel, MarianTokenizer
 import torch
 
-model_name = "Helsinki-NLP/opus-big-mt-ar-en"
+model_name = "Helsinki-NLP/opus-mt-tc-big-en-ar"
 tokenizer = MarianTokenizer.from_pretrained(model_name)
 model = MarianMTModel.from_pretrained(model_name)
 
