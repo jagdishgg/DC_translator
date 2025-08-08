@@ -1,13 +1,37 @@
 from transformers import MarianMTModel, MarianTokenizer
 import torch
 
-model_name = "Helsinki-NLP/opus-mt-tc-big-en-ar"
-tokenizer = MarianTokenizer.from_pretrained(model_name)
-model = MarianMTModel.from_pretrained(model_name)
+DetectorFactory.seed = 0 
 
-def translate_arabic_to_english(text):
-    if not text.strip():
-        return "Please enter Arabic text."
-    inputs = tokenizer(text, return_tensors="pt", padding=True, truncation=True)
-    translated = model.generate(**inputs)
+import streamlit as st
+from transformers import MarianMTModel, MarianTokenizer
+import torch
+import langdetect
+import sentencepiece
+from langdetect import detect, DetectorFactory
+import gradio as gr
+
+
+@st.cache_resource
+def load_models():
+    models = {
+     "en-ar": {
+     "name": "Helsinki-NLP/opus-mt-en-ar",
+ "tokenizer": MarianTokenizer.from_pretrained("Helsinki-NLP/opus-mt-tc-big-en-ar"),
+ "model": MarianMTModel.from_pretrained("Helsinki-NLP/opus-mt-tc-big-en-ar")
+ },
+ "ar-en": {
+ "name": "Helsinki-NLP/opus-mt-ar-en",
+ "tokenizer": MarianTokenizer.from_pretrained("Helsinki-NLP/opus-mt-tc-big-ar-en"),
+ "model": MarianMTModel.from_pretrained("Helsinki-NLP/opus-mt-tc-big-ar-en")
+}
+ }
+    return models
+    
+    
+
+
+def translate(text, tokenizer, model):
+    tokens = tokenizer([text], return_tensors="pt", padding=True)
+    translated = model.generate(**tokens)
     return tokenizer.decode(translated[0], skip_special_tokens=True)

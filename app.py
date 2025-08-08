@@ -1,14 +1,35 @@
 import streamlit as st
 from translate_ar_to_en import translate_arabic_to_english
+from translate_ar_to_en import simple_lang_detect
+from translate_ar_to_en load_models
 
-st.set_page_config(page_title="Arabic to English Translator", layout="centered")
-st.title("🇸🇦 Arabic ➝ English Translator")
-st.markdown("Translate Arabic to English using Helsinki-NLP model.")
+st.title("DC Arabic to English and viceversa Translator")
+st.markdown("Use Transliteration button for person or entity names")
+text = st.text_area("Enter text (English or Arabic):", height=150)
 
-input_text = st.text_area("✍️ Enter Arabic text", height=150)
+if st.button("Translate"):
+		 if text.strip():
+		 		 try:
+		 		 		 detected_lang = simple_lang_detect(text)
+		 		 		 models = load_models()
 
-if st.button("🔁 Translate"):
-    with st.spinner("Translating..."):
-        output = translate_arabic_to_english(input_text)
-        st.success("✅ Translation Complete")
-        st.text_area("📝 English Translation", value=output, height=150)
+		 		 		 if detected_lang == "en":
+		 		 		 		 st.info("Detected language: English → Arabic")
+		 		 		 		 tokenizer = models["en-ar"]["tokenizer"]
+		 		 		 		 model = models["en-ar"]["model"]
+		 		 		 elif detected_lang == "ar":
+		 		 		 		 st.info("Detected language: Arabic → English")
+		 		 		 		 tokenizer = models["ar-en"]["tokenizer"]
+		 		 		 		 model = models["ar-en"]["model"]
+		 		 		 else:
+		 		 		 		 st.info("Detected language: English → Arabic")
+		 		 		 		 tokenizer = models["en-ar"]["tokenizer"]
+
+		 		 		 output = translate(text, tokenizer, model)
+		 		 		 st.success("Translation:")
+		 		 		 st.write(output)
+
+		 		 except Exception as e:
+		 		 		 st.error(f"Error: {str(e)}")
+		 else:
+		 		 st.warning("Please enter some text.")
